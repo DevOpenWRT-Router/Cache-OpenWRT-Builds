@@ -1,23 +1,42 @@
-# Hello world JavaScript action
+### Cache OpenWRT Builds:
 
-This action prints "Hello World" or "Hello" + the name of a person to greet to the log. To learn how this action was built, see "[Creating a JavaScript action](https://help.github.com/en/articles/creating-a-javascript-action)" in the GitHub Help documentation.
+#### Example:
 
-## Inputs
+name: Cache Acceleration (Secondary compilation of the same model with the same source code is valid within 7 days, and only one source code cache is retained each time)
+        uses: DevOpenWRT-Router/Cache-OpenWRT-Builds@main
+        if: env.USE_CACHEWRTBUILD == 'true' && !cancelled()
+        with:
+          ccache: 'true'
+          toolchain: 'true'
+          clean: '${{ contains(github.event.action, ''nocache'') }}'
+          prefix: '${{ github.workspace }}/openwrt'
 
-### `who-to-greet`
+## Opetions:
 
-**Required** The name of the person to greet. Default `"World"`.
-
-## Outputs
-
-### `time`
-
-The time we greeted you.
-
-## Example usage
-
-```yaml
-uses: actions/hello-world-javascript-action@main
-with:
-  who-to-greet: 'Mona the Octocat'
-```
+name: 'Cache OpenWRT Builds'
+description: 'Cache builds to speed up openwrt compilation'
+inputs:
+ccache:
+description: 'check if to cache ccache'
+required: false
+default: false
+toolchain:
+description: 'check if to cache toolchain'
+required: false
+default: true
+skip:
+description: 'check if to skip the compilation of toolchain'
+required: false
+default: true
+clean:
+description: 'set to clean cache'
+required: false
+default: false
+prefix:
+description: 'path prefix to openwrt build directory'
+required: false
+defalut: ''
+mixkey:
+description: 'mix a key to identify a cache when you build openwrt for different architecture'
+required: false
+defalut: ''
